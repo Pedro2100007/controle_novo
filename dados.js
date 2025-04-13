@@ -18,6 +18,7 @@ function carregarDados() {
     const dataInicio = document.getElementById('dataInicio').value;
     const dataFim = document.getElementById('dataFim').value;
     const escalaTempo = document.getElementById('escalaTempo').value;
+    const tipoGrafico = document.getElementById('tipoGrafico').value;
 
     // Verifica se ambas as datas foram selecionadas
     if (!dataInicio || !dataFim) {
@@ -25,12 +26,15 @@ function carregarDados() {
         return;
     }
 
+    // Determina qual campo usar com base no tipo de gráfico selecionado
+    const campo = tipoGrafico === "1" ? "1" : "2";
+
     // Formata as datas no formato esperado pela API
     const inicioFormatado = new Date(dataInicio).toISOString().split('T')[0];
     const fimFormatado = new Date(dataFim).toISOString().split('T')[0];
 
     // Constrói a URL da API
-    const url = `https://api.thingspeak.com/channels/${canalId}/fields/1.json?api_key=${chaveLeitura}&start=${inicioFormatado}&end=${fimFormatado}`;
+    const url = `https://api.thingspeak.com/channels/${canalId}/fields/${campo}.json?api_key=${chaveLeitura}&start=${inicioFormatado}&end=${fimFormatado}`;
 
     // Faz a requisição à API do ThingSpeak
     fetch(url)
@@ -47,7 +51,7 @@ function carregarDados() {
             // Processa os dados brutos
             const dadosBrutos = data.feeds.map(feed => ({
                 timestamp: feed.created_at,
-                valor: parseFloat(feed.field1)
+                valor: parseFloat(feed[`field${campo}`])
             })).filter(item => !isNaN(item.valor)); // Filtra valores numéricos válidos
 
             // Agrupa os dados por intervalo de tempo se necessário
@@ -92,19 +96,37 @@ function carregarDados() {
             }
 
             // Calcula estatísticas
-            const avgTemp = (soma / valores.length).toFixed(2);
-            const maxTemp = valores[maxIndex].toFixed(2);
-            const minTemp = valores[minIndex].toFixed(2);
-            const maxTempTime = formatarDataHora(timestamps[maxIndex]);
-            const minTempTime = formatarDataHora(timestamps[minIndex]);
+            const avg = (soma / valores.length).toFixed(2);
+            const max = valores[maxIndex].toFixed(2);
+            const min = valores[minIndex].toFixed(2);
+            const maxTime = formatarDataHora(timestamps[maxIndex]);
+            const minTime = formatarDataHora(timestamps[minIndex]);
 
-            // Atualiza a interface
-            document.getElementById('avgTemp').textContent = avgTemp;
-            document.getElementById('maxTemp').innerHTML = `${maxTemp} °C <small>(${maxTempTime})</small>`;
-            document.getElementById('minTemp').innerHTML = `${minTemp} °C <small>(${minTempTime})</small>`;
+            // Atualiza a interface com base no tipo de gráfico
+            if (tipoGrafico === "1") {
+                // Temperatura
+                document.getElementById('avgTemp').textContent = avg;
+                document.getElementById('maxTemp').innerHTML = `${max} °C <small>(${maxTime})</small>`;
+                document.getElementById('minTemp').innerHTML = `${min} °C <small>(${minTime})</small>`;
+                
+                // Oculta os campos de nível
+                document.getElementById('avgNivel').textContent = '--';
+                document.getElementById('maxNivel').textContent = '--';
+                document.getElementById('minNivel').textContent = '--';
+            } else {
+                // Nível
+                document.getElementById('avgNivel').textContent = avg;
+                document.getElementById('maxNivel').innerHTML = `${max} m <small>(${maxTime})</small>`;
+                document.getElementById('minNivel').innerHTML = `${min} m <small>(${minTime})</small>`;
+                
+                // Oculta os campos de temperatura
+                document.getElementById('avgTemp').textContent = '--';
+                document.getElementById('maxTemp').textContent = '--';
+                document.getElementById('minTemp').textContent = '--';
+            }
 
             // Renderiza o gráfico
-            renderizarGrafico(timestamps, valores);
+            renderizarGrafico(timestamps, valores, tipoGrafico);
         })
         .catch(error => {
             console.error('Erro:', error);
@@ -113,11 +135,14 @@ function carregarDados() {
             document.getElementById('avgTemp').textContent = '--';
             document.getElementById('maxTemp').textContent = '--';
             document.getElementById('minTemp').textContent = '--';
+            document.getElementById('avgNivel').textContent = '--';
+            document.getElementById('maxNivel').textContent = '--';
+            document.getElementById('minNivel').textContent = '--';
         });
 }
 
 // Função para renderizar o gráfico
-function renderizarGrafico(timestamps, valores) {
+function renderizarGrafico(timestamps, valores, tipoGrafico) {
     const ctx = document.getElementById('meuGrafico').getContext('2d');
     
     // Destrói o gráfico anterior se existir
@@ -125,19 +150,24 @@ function renderizarGrafico(timestamps, valores) {
         meuGrafico.destroy();
     }
 
+    // Configurações baseadas no tipo de gráfico
+    const label = tipoGrafico === "1" ? 'Temperatura (°C)' : 'Nível (m)';
+    const borderColor = tipoGrafico === "1" ? 'rgb(75, 192, 192)' : 'rgb(192, 75, 192)';
+    const yAxisTitle = tipoGrafico === "1" ? 'Temperatura (°C)' : 'Nível (m)';
+
     // Cria novo gráfico
     meuGrafico = new Chart(ctx, {
         type: 'line',
         data: {
             labels: timestamps,
             datasets: [{
-                label: 'Temperatura (°C)',
+                label: label,
                 data: valores,
-                borderColor: 'rgb(75, 192, 192)',
+                borderColor: borderColor,
                 tension: 0.1,
                 fill: false,
                 pointRadius: 3,
-                pointBackgroundColor: 'rgb(75, 192, 192)'
+                pointBackgroundColor: borderColor
             }]
         },
         options: {
@@ -167,7 +197,7 @@ function renderizarGrafico(timestamps, valores) {
                 tooltip: {
                     callbacks: {
                         label: function(context) {
-                            return `Temperatura: ${context.parsed.y.toFixed(2)} °C`;
+                            return `${label.split(' ')[0]}: ${context.parsed.y.toFixed(2)} ${label.split(' ')[1]}`;
                         }
                     }
                 }
@@ -187,7 +217,7 @@ function renderizarGrafico(timestamps, valores) {
                 y: {
                     title: {
                         display: true,
-                        text: 'Temperatura (°C)'
+                        text: yAxisTitle
                     }
                 }
             }

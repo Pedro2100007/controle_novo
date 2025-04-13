@@ -3,135 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consulta de Dados Aquaponia</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Consulta de Dados</title>
+    <!-- Inclui o arquivo CSS -->
     <link rel="stylesheet" href="dados.css">
+    <!-- Inclui as bibliotecas Chart.js, Luxon e o adaptador para trabalhar com datas no Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
+    <!-- Inclui a biblioteca de zoom -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 </head>
 <body>
-    <div class="dashboard">
-        <header class="dashboard-header">
-            <h1><i class="fas fa-chart-bar"></i> Dados Históricos</h1>
-            <div class="status-indicators">
-                <div class="indicator">
-                    <span class="indicator-label">Sistema:</span>
-                    <span class="indicator-value">Aquaponia</span>
-                </div>
+    <header>
+        <h1>Consulta de Dados por Período</h1>
+    </header>
+    <div class="container">
+                
+        <!-- Campos de entrada para selecionar a data de início e fim -->
+        <div class="input-group">
+            <div class="input-row">
+                <label for="dataInicio">Data de Início:</label>
+                <input type="date" id="dataInicio">
             </div>
-        </header>
-
-        <main class="dashboard-main">
-            <!-- Card de Filtros -->
-            <section class="card filters-card">
-                <h2><i class="fas fa-filter"></i> Filtros de Consulta</h2>
-                
-                <div class="filter-grid">
-                    <div class="filter-group">
-                        <label for="dataInicio"><i class="far fa-calendar-alt"></i> Data Inicial</label>
-                        <input type="date" id="dataInicio" class="filter-input">
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="dataFim"><i class="far fa-calendar-alt"></i> Data Final</label>
-                        <input type="date" id="dataFim" class="filter-input">
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="escalaTempo"><i class="fas fa-clock"></i> Escala de Tempo</label>
-                        <select id="escalaTempo" class="filter-select">
-                            <option value="15">15 minutos</option>
-                            <option value="60">1 hora</option>
-                            <option value="120">2 horas</option>
-                            <option value="240">4 horas</option>
-                            <option value="360">6 horas</option>
-                            <option value="720">12 horas</option>
-                            <option value="1440">1 dia</option>
-                            <option value="10080">1 semana</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="action-buttons">
-                    <button class="btn btn-primary" onclick="carregarDados()">
-                        <i class="fas fa-chart-line"></i> Gerar Gráfico
-                    </button>
-                </div>
-            </section>
-
-            <!-- Card do Gráfico -->
-            <section class="card chart-card">
-                <div class="chart-header">
-                    <h2><i class="fas fa-chart-area"></i> Análise de Temperatura</h2>
-                    <div class="zoom-controls">
-                        <button class="btn btn-sm btn-outline" id="zoomIn">
-                            <i class="fas fa-search-plus"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline" id="zoomOut">
-                            <i class="fas fa-search-minus"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline" id="resetZoom">
-                            <i class="fas fa-sync-alt"></i> Resetar
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="chart-container">
-                    <canvas id="meuGrafico"></canvas>
-                </div>
-            </section>
-
-            <!-- Card de Estatísticas -->
-            <section class="card stats-card">
-                <h2><i class="fas fa-calculator"></i> Estatísticas</h2>
-                
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="stat-icon temperature">
-                            <i class="fas fa-thermometer-half"></i>
-                        </div>
-                        <div class="stat-info">
-                            <span class="stat-label">Média</span>
-                            <span class="stat-value" id="avgTemp">--</span>
-                            <span class="stat-unit">°C</span>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-item">
-                        <div class="stat-icon max">
-                            <i class="fas fa-arrow-up"></i>
-                        </div>
-                        <div class="stat-info">
-                            <span class="stat-label">Máxima</span>
-                            <span class="stat-value" id="maxTemp">--</span>
-                            <span class="stat-unit">°C</span>
-                        </div>
-                    </div>
-                    
-                    <div class="stat-item">
-                        <div class="stat-icon min">
-                            <i class="fas fa-arrow-down"></i>
-                        </div>
-                        <div class="stat-info">
-                            <span class="stat-label">Mínima</span>
-                            <span class="stat-value" id="minTemp">--</span>
-                            <span class="stat-unit">°C</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Botão de Voltar -->
-            <div class="action-buttons">
-                <button class="btn btn-secondary" onclick="window.location.href='index.html'">
-                    <i class="fas fa-arrow-left"></i> Voltar ao Controle
-                </button>
+            <div class="input-row">
+                <label for="dataFim">Data de Fim:</label>
+                <input type="date" id="dataFim">
             </div>
-        </main>
+            <div class="input-row">
+                <label for="escalaTempo">Escala de Tempo:</label>
+                <select id="escalaTempo">
+                    <option value="15">15 minutos</option>
+                    <option value="60">1 hora</option>
+                    <option value="120">2 horas</option>
+                    <option value="240">4 horas</option>
+                    <option value="360">6 horas</option>
+                    <option value="720">12 horas</option>
+                    <option value="1440">1 dia</option>
+                    <option value="10080">1 semana</option>
+                </select>
+            </div>
+            <div class="input-row">
+                <label for="tipoGrafico">Tipo de Gráfico:</label>
+                <select id="tipoGrafico">
+                    <option value="1">Temperatura</option>
+                    <option value="2">Nível</option>
+                </select>
+            </div>
+            <button onclick="carregarDados()">Gráfico</button>
+        </div>
+        
+        <!-- Div para exibir os valores do field 1 - habilitar no js removendo os comentários-->
+        <div id="valores"></div>
+
+        <!-- Canvas onde o gráfico será renderizado -->
+        <canvas id="meuGrafico"></canvas>
+
+        <!-- Div para exibir os resumos -->
+        <div id="results">
+            <h2>Resultados:</h2>
+            <p>Temperatura Média: <span id="avgTemp">--</span> °C</p>
+            <p>Temperatura Máxima: <span id="maxTemp">--</span> °C</p>
+            <p>Temperatura Mínima: <span id="minTemp">--</span> °C</p>
+            <p>Nível Médio: <span id="avgNivel">--</span> m</p>
+            <p>Nível Máximo: <span id="maxNivel">--</span> m</p>
+            <p>Nível Mínimo: <span id="minNivel">--</span> m</p>
+        </div>
+
     </div>
 
+    <!-- Link para página de controle -->
+    <div class="buttons">
+        <button class="button blue" onclick="window.location.href='index.html'">Voltar</button>
+    </div>
+    
+
+    <!-- Inclui o arquivo JavaScript -->
     <script src="dados.js"></script>
 </body>
 </html>
