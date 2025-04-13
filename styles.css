@@ -1,0 +1,421 @@
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --warning-color: #f39c12;
+  --dark-color: #34495e;
+  --light-color: #ecf0f1;
+  --text-color: #2c3e50;
+  --text-light: #7f8c8d;
+  --card-bg: #ffffff;
+  --body-bg: #f5f7fa;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--body-bg);
+  color: var(--text-color);
+  line-height: 1.6;
+  padding: 20px;
+}
+
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.dashboard-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dashboard-header h1 {
+  font-size: 24px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-indicators {
+  display: flex;
+  gap: 15px;
+}
+
+.indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.indicator-label {
+  font-weight: bold;
+}
+
+.indicator-value {
+  font-weight: normal;
+}
+
+.dashboard-main {
+  padding: 20px;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Seção de Dados em Tempo Real */
+.realtime-data {
+  margin-bottom: 20px;
+}
+
+.sensor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.sensor-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background-color: var(--light-color);
+  border-radius: 8px;
+  transition: var(--transition);
+}
+
+.sensor-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.sensor-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: white;
+}
+
+.sensor-icon.temperature {
+  background-color: var(--danger-color);
+}
+
+.sensor-icon.level {
+  background-color: var(--primary-color);
+}
+
+.sensor-icon.pump {
+  background-color: var(--secondary-color);
+}
+
+.sensor-icon.heater {
+  background-color: var(--warning-color);
+}
+
+.sensor-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sensor-label {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+.sensor-value {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.sensor-unit {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* Seção de Controles */
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .controls-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.manual-control, .auto-control {
+  height: 100%;
+}
+
+.control-group {
+  margin-bottom: 20px;
+}
+
+.control-group h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: var(--dark-color);
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+}
+
+/* Formulário de Controle Automático */
+.auto-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form-group label {
+  font-size: 14px;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: var(--transition);
+}
+
+.form-group input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.switch-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: var(--transition);
+  border-radius: 24px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: var(--transition);
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--secondary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.switch-status {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+/* Botões */
+.btn {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+
+.btn-success {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-success:hover {
+  background-color: #27ae60;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #c0392b;
+}
+
+.btn-secondary {
+  background-color: var(--dark-color);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #2c3e50;
+}
+
+/* Botão pequeno (para Acessar Dados) */
+.btn-sm {
+  padding: 8px 12px;
+  font-size: 13px;
+  width: auto;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Status indicators */
+.sensor-value.on {
+  color: var(--secondary-color);
+}
+
+.sensor-value.off {
+  color: var(--danger-color);
+}
+
+.sensor-icon.on {
+  background-color: var(--secondary-color);
+}
+
+.sensor-icon.off {
+  background-color: #ccc;
+}
+
+/* Botões desabilitados */
+.btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Estilo para o status do modo automático */
+.switch-status.active {
+  color: var(--secondary-color);
+  font-weight: bold;
+}
+
+/* Estilo para controles manuais desabilitados */
+.button-group button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .controls-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    text-align: left;
+  }
+}

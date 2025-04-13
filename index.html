@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Controle Aquaponia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <h1><i class="fas fa-water"></i> Controle Aquaponia</h1>
+            <div class="status-indicators">
+                <div class="indicator" id="systemStatus">
+                    <span class="indicator-label">Status:</span>
+                    <span class="indicator-value">Operacional</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <!-- Seção de Monitoramento em Tempo Real -->
+            <section class="card realtime-data">
+                <h2><i class="fas fa-chart-line"></i> Dados em Tempo Real</h2>
+                <div class="sensor-grid">
+                    <div class="sensor-item">
+                        <div class="sensor-icon temperature">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <div class="sensor-info">
+                            <span class="sensor-label">Temperatura</span>
+                            <span class="sensor-value" id="temperature">--</span>
+                            <span class="sensor-unit">°C</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sensor-item">
+                        <div class="sensor-icon level">
+                            <i class="fas fa-ruler-vertical"></i>
+                        </div>
+                        <div class="sensor-info">
+                            <span class="sensor-label">Nível da Água</span>
+                            <span class="sensor-value" id="level">--</span>
+                            <span class="sensor-unit">cm</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sensor-item">
+                        <div class="sensor-icon pump" id="pumpIcon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div class="sensor-info">
+                            <span class="sensor-label">Bomba</span>
+                            <span class="sensor-value" id="statusBomba">--</span>
+                        </div>
+                    </div>
+                    
+                    <div class="sensor-item">
+                        <div class="sensor-icon heater" id="heaterIcon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="sensor-info">
+                            <span class="sensor-label">Aquecedor</span>
+                            <span class="sensor-value" id="statusAquecedor">--</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção de Controles -->
+            <div class="controls-grid">
+                <!-- Controle Manual -->
+                <section class="card manual-control">
+                    <h2><i class="fas fa-sliders-h"></i> Controle Manual</h2>
+                    
+                    <div class="control-group">
+                        <h3>Controle da Bomba</h3>
+                        <div class="button-group">
+                            <button class="btn btn-success" id="bombaOn" title="Após clicar aguarde 15 segundos para o próximo comando">
+                                <i class="fas fa-power-off"></i> Ligar
+                            </button>
+                            <button class="btn btn-danger" id="bombaOff" title="Após clicar aguarde 15 segundos para o próximo comando">
+                                <i class="fas fa-power-off"></i> Desligar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Controle do Aquecedor</h3>
+                        <div class="button-group">
+                            <button class="btn btn-success" id="resistenciaOn" title="Após clicar aguarde 15 segundos para o próximo comando">
+                                <i class="fas fa-power-off"></i> Ligar
+                            </button>
+                            <button class="btn btn-danger" id="resistenciaOff" title="Após clicar aguarde 15 segundos para o próximo comando">
+                                <i class="fas fa-power-off"></i> Desligar
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Controle Automático -->
+                <section class="card auto-control">
+                    <h2><i class="fas fa-robot"></i> Controle Automático</h2>
+                    
+                    <form id="bombaForm" class="auto-form">
+                        <div class="form-group">
+                            <label for="tempoLiga" title="Tempo para o ciclo de ligar a bomba (0 para modo contínuo)">
+                                <i class="fas fa-clock"></i> Ciclo ligar bomba (s):
+                            </label>
+                            <input type="number" id="tempoLiga" name="tempoLiga" min="0" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tempoDesliga" title="Tempo para desligar a bomba após ligada (deve ser menor que o ciclo liga)">
+                                <i class="fas fa-clock"></i> Ciclo desligar bomba (s):
+                            </label>
+                            <input type="number" id="tempoDesliga" name="tempoDesliga" min="0" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="temperaturaAlvo" title="Temperatura desejada (Sugestão: 20-45°C)">
+                                <i class="fas fa-thermometer-half"></i> Temperatura alvo (°C):
+                            </label>
+                            <input type="number" id="temperaturaAlvo" name="temperaturaAlvo" min="15" max="45" required>
+                        </div>
+                        
+                        <div class="form-group switch-group">
+                            <label>Modo automático:</label>
+                            <label class="switch">
+                                <input type="checkbox" id="modoAutomatico">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="switch-status" id="modoAutomaticoStatus">Desligado</span>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+            <!-- Botão de Acesso aos Dados - Tamanho ajustado -->
+            <div class="action-buttons">
+                <button class="btn btn-primary btn-sm" onclick="window.location.href='dados.html'">
+                    <i class="fas fa-database"></i> Acessar Dados Históricos
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

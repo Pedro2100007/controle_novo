@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Dados Aquaponia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dados.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <header class="dashboard-header">
+            <h1><i class="fas fa-chart-bar"></i> Dados Históricos</h1>
+            <div class="status-indicators">
+                <div class="indicator">
+                    <span class="indicator-label">Sistema:</span>
+                    <span class="indicator-value">Aquaponia</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="dashboard-main">
+            <!-- Card de Filtros -->
+            <section class="card filters-card">
+                <h2><i class="fas fa-filter"></i> Filtros de Consulta</h2>
+                
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label for="dataInicio"><i class="far fa-calendar-alt"></i> Data Inicial</label>
+                        <input type="date" id="dataInicio" class="filter-input">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="dataFim"><i class="far fa-calendar-alt"></i> Data Final</label>
+                        <input type="date" id="dataFim" class="filter-input">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="escalaTempo"><i class="fas fa-clock"></i> Escala de Tempo</label>
+                        <select id="escalaTempo" class="filter-select">
+                            <option value="15">15 minutos</option>
+                            <option value="60">1 hora</option>
+                            <option value="120">2 horas</option>
+                            <option value="240">4 horas</option>
+                            <option value="360">6 horas</option>
+                            <option value="720">12 horas</option>
+                            <option value="1440">1 dia</option>
+                            <option value="10080">1 semana</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="carregarDados()">
+                        <i class="fas fa-chart-line"></i> Gerar Gráfico
+                    </button>
+                </div>
+            </section>
+
+            <!-- Card do Gráfico -->
+            <section class="card chart-card">
+                <div class="chart-header">
+                    <h2><i class="fas fa-chart-area"></i> Análise de Temperatura</h2>
+                    <div class="zoom-controls">
+                        <button class="btn btn-sm btn-outline" id="zoomIn">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline" id="zoomOut">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline" id="resetZoom">
+                            <i class="fas fa-sync-alt"></i> Resetar
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <canvas id="meuGrafico"></canvas>
+                </div>
+            </section>
+
+            <!-- Card de Estatísticas -->
+            <section class="card stats-card">
+                <h2><i class="fas fa-calculator"></i> Estatísticas</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-icon temperature">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Média</span>
+                            <span class="stat-value" id="avgTemp">--</span>
+                            <span class="stat-unit">°C</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-icon max">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Máxima</span>
+                            <span class="stat-value" id="maxTemp">--</span>
+                            <span class="stat-unit">°C</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-item">
+                        <div class="stat-icon min">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-label">Mínima</span>
+                            <span class="stat-value" id="minTemp">--</span>
+                            <span class="stat-unit">°C</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Botão de Voltar -->
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+                    <i class="fas fa-arrow-left"></i> Voltar ao Controle
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script src="dados.js"></script>
+</body>
+</html>
