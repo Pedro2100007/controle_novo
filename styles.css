@@ -23,15 +23,15 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--body-bg);
   color: var(--text-color);
-  line-height: 1.6;
-  padding: 20px;
+  line-height: 1.4;
+  padding: 15px;
 }
 
 .dashboard {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   background-color: var(--card-bg);
-  border-radius: 10px;
+  border-radius: 8px;
   box-shadow: var(--shadow);
   overflow: hidden;
 }
@@ -39,23 +39,23 @@ body {
 .dashboard-header {
   background-color: var(--primary-color);
   color: white;
-  padding: 20px;
+  padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .dashboard-header h1 {
-  font-size: 24px;
+  font-size: 20px;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .status-indicators {
   display: flex;
-  gap: 15px;
+  gap: 10px;
 }
 
 .indicator {
@@ -63,9 +63,9 @@ body {
   align-items: center;
   gap: 5px;
   background-color: rgba(255, 255, 255, 0.2);
-  padding: 5px 10px;
+  padding: 4px 8px;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .indicator-label {
@@ -77,44 +77,44 @@ body {
 }
 
 .dashboard-main {
-  padding: 20px;
+  padding: 15px;
 }
 
 .card {
   background-color: var(--card-bg);
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: var(--shadow);
-  padding: 20px;
-  margin-bottom: 20px;
+  padding: 15px;
+  margin-bottom: 15px;
 }
 
 .card h2 {
-  font-size: 18px;
-  margin-bottom: 15px;
+  font-size: 16px;
+  margin-bottom: 12px;
   color: var(--primary-color);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 /* Seção de Dados em Tempo Real */
 .realtime-data {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .sensor-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+  gap: 10px;
 }
 
 .sensor-item {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 15px;
+  gap: 10px;
+  padding: 10px;
   background-color: var(--light-color);
-  border-radius: 8px;
+  border-radius: 6px;
   transition: var(--transition);
 }
 
@@ -130,7 +130,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
+  font-size: 18px;
   color: white;
 }
 
@@ -156,18 +156,18 @@ body {
 }
 
 .sensor-label {
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text-light);
 }
 
 .sensor-value {
-  font-size: 22px;
+  font-size: 18px;
   font-weight: bold;
   color: var(--text-color);
 }
 
 .sensor-unit {
-  font-size: 14px;
+  font-size: 12px;
   color: var(--text-light);
 }
 
@@ -175,7 +175,7 @@ body {
 .controls-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  gap: 15px;
 }
 
 @media (min-width: 768px) {
@@ -189,18 +189,22 @@ body {
 }
 
 .control-group {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .control-group h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 14x;
+  margin-bottom: 8px;
   color: var(--dark-color);
 }
 
 .button-group {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  width: 200px;
+  padding: 8px 10px;
+  font-size: 13px;
+  justify-content: center;
 }
 
 /* Formulário de Controle Automático */
@@ -217,18 +221,18 @@ body {
 }
 
 .form-group label {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-color);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .form-group input {
-  padding: 10px;
+  padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 14px;
   transition: var(--transition);
 }
 
@@ -358,14 +362,14 @@ input:checked + .slider:before {
 /* Botão pequeno (para Acessar Dados) */
 .btn-sm {
   padding: 8px 12px;
-  font-size: 13px;
+  font-size: 1rem;
   width: auto;
 }
 
 .action-buttons {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 18px;
 }
 
 /* Status indicators */

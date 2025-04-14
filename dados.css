@@ -1,138 +1,156 @@
-/* dados.css */
+/* Estilos gerais da página */
 body {
-    font-family: Arial, sans-serif; /* Fonte padrão */
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh; /* Centraliza verticalmente */
-    background-color: #f4f4f4; /* Cor de fundo */
-    flex-direction: column; /* Alinha os itens em coluna */
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem;
+    text-align: center;
 }
 
 .container {
-    text-align: center;
-    background-color: #fff; /* Fundo branco */
-    padding: 20px;
-    border-radius: 10px; /* Bordas arredondadas */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    width: 90%;
-    max-width: 800px; /* Largura máxima aumentada */
-    margin: 20px 0; /* Espaçamento externo */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-    margin-bottom: 20px;
+/* Estilos para a seção de filtros */
+.filters-container {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 5px;
 }
 
-.input-group {
+.filter-row {
     display: flex;
-    flex-direction: column;
-    gap: 15px; /* Espaçamento entre os elementos */
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
 }
 
-.input-row {
-    display: flex;
-    flex-direction: column;
-    gap: 5px; /* Espaçamento entre label e input */
+.input-pair {
+    flex: 1;
+    min-width: 200px;
 }
 
-label {
+.input-pair label {
+    display: block;
+    margin-bottom: 0.3rem;
     font-weight: bold;
-    text-align: left;
 }
 
-input[type="date"], select {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
+.input-pair input, 
+.input-pair select {
     width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
-button {
-    padding: 10px;
-    background-color: #007bff;
+/* Estilos para o botão Gráfico */
+.button-center {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.action-button {
+    padding: 0.5rem 1.5rem;
+    background-color: #3498db;
     color: white;
     border: none;
     border-radius: 4px;
-    font-size: 16px;
     cursor: pointer;
-    margin-top: 10px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
 }
 
-button:hover {
-    background-color: #0056b3;
+.action-button:hover {
+    background-color: #2980b9;
 }
 
-#valores {
-    margin-top: 20px;
-}
-
-#meuGrafico {
-    margin-top: 20px;
-    width: 100% !important;
-    height: 400px !important;
-}
-
-#results {
-    margin-top: 20px;
-    text-align: left;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-#results h2 {
-    grid-column: 1 / -1;
-}
-
+/* Estilos para o botão Voltar */
 .buttons {
-    margin-top: 20px;
+    text-align: center;
+    margin-top: 1.5rem;
 }
 
 .button.blue {
-    background-color: #007bff;
-    color: white;
-    width: 150px
-}
-
-.button.blue:hover {
-    background-color: #0056b3;
-}
-
-.input-row select {
-    max-width: none;
-}
-
-#results p small {
-    font-size: 0.8em;
-    color: #666;
-    margin-left: 5px;
-}
-
-#results p {
-    margin-bottom: 10px;
-    line-height: 1.2;
-}
-
-.zoom-controls {
-    margin: 15px 0;
-    text-align: center;
-}
-
-.zoom-controls button {
-    padding: 8px 15px;
-    margin: 0 5px;
-    background-color: #4CAF50;
+    padding: 0.5rem 1.5rem;
+    background-color: #3498db;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    display: inline-block;
 }
 
-.zoom-controls button:hover {
-    background-color: #45a049;
+.button.blue:hover {
+    background-color: #2980b9;
+}
+
+/* Estilos para o canvas do gráfico */
+#meuGrafico {
+    width: 100%;
+    height: 400px;
+    margin: 1rem 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Estilos para a seção de resultados */
+#results {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+#results h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.5rem;
+}
+
+.result-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.5rem; /* Espaçamento reduzido entre linhas */
+}
+
+.result-row p {
+    margin: 0.3rem 0; /* Espaçamento reduzido entre parágrafos */
+    flex: 1;
+    min-width: 150px;
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .filter-row, .result-row {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .input-pair, .result-row p {
+        min-width: 100%;
+    }
 }

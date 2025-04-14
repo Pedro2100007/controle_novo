@@ -18,64 +18,76 @@
         <h1>Consulta de Dados por Período</h1>
     </header>
     <div class="container">
-                
-        <!-- Campos de entrada para selecionar a data de início e fim -->
-        <div class="input-group">
-            <div class="input-row">
-                <label for="dataInicio">Data de Início:</label>
-                <input type="date" id="dataInicio">
+        <!-- Seção de filtros - organizada em linhas com elementos lado a lado -->
+        <div class="filters-container">
+            <!-- Primeira linha: datas lado a lado -->
+            <div class="filter-row">
+                <div class="input-pair">
+                    <label for="dataInicio">Data de Início:</label>
+                    <input type="date" id="dataInicio">
+                </div>
+                <div class="input-pair">
+                    <label for="dataFim">Data de Fim:</label>
+                    <input type="date" id="dataFim">
+                </div>
             </div>
-            <div class="input-row">
-                <label for="dataFim">Data de Fim:</label>
-                <input type="date" id="dataFim">
+            
+            <!-- Segunda linha: escala e tipo de gráfico lado a lado -->
+            <div class="filter-row">
+                <div class="input-pair">
+                    <label for="escalaTempo">Escala de Tempo:</label>
+                    <select id="escalaTempo">
+                        <option value="15">15 minutos</option>
+                        <option value="60">1 hora</option>
+                        <option value="120">2 horas</option>
+                        <option value="240">4 horas</option>
+                        <option value="360">6 horas</option>
+                        <option value="720">12 horas</option>
+                        <option value="1440">1 dia</option>
+                        <option value="10080">1 semana</option>
+                    </select>
+                </div>
+                <div class="input-pair">
+                    <label for="tipoGrafico">Tipo de Gráfico:</label>
+                    <select id="tipoGrafico">
+                        <option value="1">Temperatura</option>
+                        <option value="2">Nível</option>
+                    </select>
+                </div>
             </div>
-            <div class="input-row">
-                <label for="escalaTempo">Escala de Tempo:</label>
-                <select id="escalaTempo">
-                    <option value="15">15 minutos</option>
-                    <option value="60">1 hora</option>
-                    <option value="120">2 horas</option>
-                    <option value="240">4 horas</option>
-                    <option value="360">6 horas</option>
-                    <option value="720">12 horas</option>
-                    <option value="1440">1 dia</option>
-                    <option value="10080">1 semana</option>
-                </select>
+            
+            <!-- Botão Gráfico centralizado -->
+            <div class="button-center">
+                <button class="action-button" onclick="carregarDados()">Gráfico</button>
             </div>
-            <div class="input-row">
-                <label for="tipoGrafico">Tipo de Gráfico:</label>
-                <select id="tipoGrafico">
-                    <option value="1">Temperatura</option>
-                    <option value="2">Nível</option>
-                </select>
-            </div>
-            <button onclick="carregarDados()">Gráfico</button>
         </div>
         
-        <!-- Div para exibir os valores do field 1 - habilitar no js removendo os comentários-->
+        <!-- Div para exibir os valores do field 1 - habilitar no js removendo os comentários -->
         <div id="valores"></div>
 
         <!-- Canvas onde o gráfico será renderizado -->
         <canvas id="meuGrafico"></canvas>
 
-        <!-- Div para exibir os resumos -->
+        <!-- Div para exibir os resumos com espaçamento reduzido -->
         <div id="results">
             <h2>Resultados:</h2>
-            <p>Temperatura Média: <span id="avgTemp">--</span> °C</p>
-            <p>Temperatura Máxima: <span id="maxTemp">--</span> °C</p>
-            <p>Temperatura Mínima: <span id="minTemp">--</span> °C</p>
-            <p>Nível Médio: <span id="avgNivel">--</span> m</p>
-            <p>Nível Máximo: <span id="maxNivel">--</span> m</p>
-            <p>Nível Mínimo: <span id="minNivel">--</span> m</p>
+            <div class="result-row">
+                <p>Temperatura Média: <span id="avgTemp">--</span> °C</p>
+                <p>Temperatura Máxima: <span id="maxTemp">--</span> °C</p>
+                <p>Temperatura Mínima: <span id="minTemp">--</span> °C</p>
+            </div>
+            <div class="result-row">
+                <p>Nível Médio: <span id="avgNivel">--</span> m</p>
+                <p>Nível Máximo: <span id="maxNivel">--</span> m</p>
+                <p>Nível Mínimo: <span id="minNivel">--</span> m</p>
+            </div>
         </div>
 
+        <!-- Botão Voltar no final do container -->
+        <div class="buttons">
+            <button class="button blue" onclick="window.location.href='index.html'">Voltar</button>
+        </div>
     </div>
-
-    <!-- Link para página de controle -->
-    <div class="buttons">
-        <button class="button blue" onclick="window.location.href='index.html'">Voltar</button>
-    </div>
-    
 
     <!-- Inclui o arquivo JavaScript -->
     <script src="dados.js"></script>
