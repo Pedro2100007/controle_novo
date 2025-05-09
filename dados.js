@@ -12,14 +12,6 @@ function formatarDataHora(timestamp) {
     return `${data.getDate().toString().padStart(2, '0')}/${(data.getMonth()+1).toString().padStart(2, '0')}/${data.getFullYear()} ${data.getHours().toString().padStart(2, '0')}:${data.getMinutes().toString().padStart(2, '0')}`;
 }
 
-// Função para determinar a unidade de tempo baseada na escala
-function determinarUnidadeTempo(escala) {
-    const minutos = parseInt(escala);
-    if (minutos <= 60) return 'minute'; // Até 1 hora mostra minutos
-    if (minutos <= 1440) return 'hour'; // Até 1 dia mostra horas
-    return 'day'; // Mais de 1 dia mostra dias
-}
-
 // Função para carregar os dados com base nas datas selecionadas
 function carregarDados() {
     // Obtém as datas de início e fim dos campos de entrada
@@ -58,7 +50,7 @@ function carregarDados() {
 
             // Processa os dados brutos
             const dadosBrutos = data.feeds.map(feed => ({
-                timestamp: new Date(feed.created_at).getTime(), // Converte para timestamp
+                timestamp: feed.created_at,
                 valor: parseFloat(feed[`field${campo}`])
             })).filter(item => !isNaN(item.valor)); // Filtra valores numéricos válidos
 
@@ -134,7 +126,7 @@ function carregarDados() {
             }
 
             // Renderiza o gráfico
-            renderizarGrafico(timestamps, valores, tipoGrafico, escalaTempo);
+            renderizarGrafico(timestamps, valores, tipoGrafico);
         })
         .catch(error => {
             console.error('Erro:', error);
@@ -150,7 +142,7 @@ function carregarDados() {
 }
 
 // Função para renderizar o gráfico
-function renderizarGrafico(timestamps, valores, tipoGrafico, escalaTempo) {
+function renderizarGrafico(timestamps, valores, tipoGrafico) {
     const ctx = document.getElementById('meuGrafico').getContext('2d');
     
     // Destrói o gráfico anterior se existir
@@ -158,9 +150,6 @@ function renderizarGrafico(timestamps, valores, tipoGrafico, escalaTempo) {
         meuGrafico.destroy();
     }
 
-    // Determina a unidade de tempo baseada na escala
-    const unidadeTempo = determinarUnidadeTempo(escalaTempo);
-    
     // Configurações baseadas no tipo de gráfico
     const label = tipoGrafico === "1" ? 'Temperatura (°C)' : 'Nível (cm)';
     const borderColor = tipoGrafico === "1" ? 'rgb(75, 192, 192)' : 'rgb(192, 75, 192)';
@@ -173,7 +162,7 @@ function renderizarGrafico(timestamps, valores, tipoGrafico, escalaTempo) {
             labels: timestamps,
             datasets: [{
                 label: label,
-                data: valores.map((v, i) => ({x: timestamps[i], y: v})),
+                data: valores,
                 borderColor: borderColor,
                 tension: 0.1,
                 fill: false,
@@ -209,49 +198,29 @@ function renderizarGrafico(timestamps, valores, tipoGrafico, escalaTempo) {
                     callbacks: {
                         label: function(context) {
                             return `${label.split(' ')[0]}: ${context.parsed.y.toFixed(2)} ${label.split(' ')[1]}`;
-                        },
-                        title: function(context) {
-                            return formatarDataHora(context[0].parsed.x);
                         }
                     }
-                },
-                legend: {
-                    display: true,
-                    position: 'top'
                 }
             },
+
             scales: {
                 x: {
                     type: 'time',
                     time: {
-                        unit: unidadeTempo,
-                        tooltipFormat: 'DD/MM/YYYY HH:mm',
-                        displayFormats: {
-                            minute: 'HH:mm',
-                            hour: 'DD/MM HH:mm',
-                            day: 'DD/MM/YYYY'
-                        }
+                        unit: 'hour',
+                        tooltipFormat: 'DD/MM/YYYY HH:mm'
                     },
                     title: {
                         display: true,
                         text: 'Data/Hora'
-                    },
-                    ticks: {
-                        autoSkip: true,
-                        maxTicksLimit: 10
                     }
                 },
                 y: {
                     title: {
                         display: true,
                         text: yAxisTitle
-                    },
-                    beginAtZero: tipoGrafico !== "1" // Nível começa em zero, temperatura não
+                    }
                 }
-            },
-            interaction: {
-                intersect: false,
-                mode: 'index'
             }
         }
     });

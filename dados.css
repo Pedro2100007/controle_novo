@@ -1,156 +1,184 @@
-/* Estilos gerais da página */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
-    color: #333;
-}
-
-header {
-    background-color: #2c3e50;
-    color: white;
-    padding: 1rem;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    flex-direction: column;
 }
 
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem;
-    background-color: white;
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 800px;
+    margin: 20px 0;
 }
 
-/* Estilos para a seção de filtros */
-.filters-container {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background-color: #f9f9f9;
-    border-radius: 5px;
+h1 {
+    margin-bottom: 20px;
+    color: #333;
 }
 
-.filter-row {
+h1 i {
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.input-group {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    flex-direction: column;
+    gap: 15px;    
 }
 
-.input-pair {
-    flex: 1;
-    min-width: 200px;
+.input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
 }
 
-.input-pair label {
-    display: block;
-    margin-bottom: 0.3rem;
+label {
     font-weight: bold;
+    text-align: left;
+    color: #555;
 }
 
-.input-pair input, 
-.input-pair select {
+label i {
+    margin-right: 8px;
+    width: 20px;
+    color: #007bff;
+}
+
+input[type="date"], select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
     width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    box-sizing: border-box;
 }
 
-/* Estilos para o botão Gráfico */
-.button-center {
-    text-align: center;
-    margin-top: 1rem;
-}
-
-.action-button {
-    padding: 0.5rem 1.5rem;
-    background-color: #3498db;
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
+    font-size: 16px;
+    min-width: 150px;
+    max-width: 250px;
     cursor: pointer;
-    font-size: 1rem;
+    margin-top: 10px;
     transition: background-color 0.3s;
+
 }
 
-.action-button:hover {
-    background-color: #2980b9;
+button:hover {
+    background-color: #0056b3;
 }
 
-/* Estilos para o botão Voltar */
-.buttons {
-    text-align: center;
-    margin-top: 1.5rem;
+button i {
+    margin-right: 8px;
 }
 
-.button.blue {
-    padding: 0.5rem 1.5rem;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s;
-    text-decoration: none;
-    display: inline-block;
+#valores {
+    margin-top: 20px;
 }
 
-.button.blue:hover {
-    background-color: #2980b9;
-}
-
-/* Estilos para o canvas do gráfico */
 #meuGrafico {
-    width: 100%;
-    height: 400px;
-    margin: 1rem 0;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    margin-top: 20px;
+    width: 100% !important;
+    height: 400px !important;
+    background-Color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #eee;
 }
 
-/* Estilos para a seção de resultados */
 #results {
-    margin-top: 1.5rem;
-    padding: 1rem;
+    margin-top: 20px;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
     background-color: #f9f9f9;
-    border-radius: 5px;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #eee;
 }
 
 #results h2 {
-    margin-top: 0;
-    color: #2c3e50;
+    grid-column: 1 / -1;
+    color: #333;
     border-bottom: 1px solid #ddd;
-    padding-bottom: 0.5rem;
+    padding-bottom: 10px;
+    margin-bottom: 0;
 }
 
-.result-row {
+#results h2 i {
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.button.blue {
+    background-color: #007bff;
+    color: white;
+    width: 150px;
+}
+
+.button.blue:hover {
+    background-color: #0056b3;
+}
+
+.input-row select {
+    max-width: none;
+}
+
+#results p {
+    margin-bottom: 10px;
+    line-height: 1.2;
+    color: #555;
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 0.5rem; /* Espaçamento reduzido entre linhas */
+    align-items: center;
 }
 
-.result-row p {
-    margin: 0.3rem 0; /* Espaçamento reduzido entre parágrafos */
-    flex: 1;
-    min-width: 150px;
-    background-color: white;
-    padding: 0.5rem;
+#results p i {
+    margin-right: 10px;
+    width: 20px;
+    color: #007bff;
+}
+
+#results p small {
+    font-size: 0.8em;
+    color: #666;
+    margin-left: 5px;
+}
+
+.zoom-controls {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.zoom-controls button {
+    padding: 8px 15px;
+    margin: 0 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
     border-radius: 4px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 14px;
 }
 
-/* Estilos responsivos */
-@media (max-width: 768px) {
-    .filter-row, .result-row {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .input-pair, .result-row p {
-        min-width: 100%;
-    }
+.zoom-controls button:hover {
+    background-color: #45a049;
 }
