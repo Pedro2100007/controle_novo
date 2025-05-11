@@ -3,6 +3,11 @@ const channelID = '2840207';
 const readAPIKey = '5UWNQD21RD2A7QHG';
 const writeAPIKey = '9NG6QLIN8UXLE2AH';
 
+const STATUS_CHANNEL_ID = '2533413';
+const STATUS_READ_API_KEY = '7ORUZSCMCUEUAQ3Z';
+const STATUS_WRITE_API_KEY = 'BY3NQR5RTECHYXQ5';
+const STATUS_TIMEOUT = 60000; // 60 segundos
+
 // Variáveis de controle
 let lastCommandTime = 0;
 const COMMAND_DELAY = 15000; // 15 segundos
@@ -58,7 +63,12 @@ function updateModeButtonState(isAuto) {
 // Função para atualizar a interface
 function updateUI(data) {
   console.log("Dados recebidos para atualização:", data);
-  
+
+    
+  if (data.field1 !== undefined && data.field1 !== null) {
+      elements.temperature.textContent = parseFloat(data.field1).toFixed(1);
+  }
+
   // Atualiza todos os campos
   if (data.field1 !== undefined && data.field1 !== null) {
     elements.temperature.textContent = parseFloat(data.field1).toFixed(1);
@@ -125,6 +135,66 @@ async function fetchData() {
     return null;
   }
 }
+
+// Modifique a função updateSystemStatus para:
+async function updateSystemStatus() {
+    try {
+        const response = await fetch(`https://api.thingspeak.com/channels/${STATUS_CHANNEL_ID}/feeds/last.json?api_key=${STATUS_READ_API_KEY}`);
+        
+        if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+        
+        const data = await response.json();
+        const statusElement = document.getElementById('statusValue');
+        const indicator = document.getElementById('systemStatus');
+        
+        if (!data || !data.created_at) {
+            setStatus('DESCONECTADO', 'disconnected');
+            return;
+        }
+        
+        // Verifica se os dados estão atualizados
+        const lastUpdate = new Date(data.created_at);
+        const now = new Date();
+        const diffSeconds = (now - lastUpdate) / 1000;
+        
+        if (diffSeconds > 30) {
+            setStatus('DESCONECTADO', 'disconnected');
+            return;
+        }
+        
+        // Verifica o valor do field3 (0 = Manual, 1 = Automático)
+        const status = parseInt(data.field3);
+        if (status === 1) {
+            setStatus('AUTOMÁTICO', 'automatic');
+        } else if (status === 0) {
+            setStatus('MANUAL', 'manual');
+        } else {
+            setStatus('DESCONECTADO', 'disconnected');
+        }
+        
+        function setStatus(text, type) {
+            statusElement.textContent = text;
+            statusElement.className = `indicator-value ${type}`;
+            
+            // Altera a cor de fundo do indicador
+            if (type === 'disconnected') {
+                indicator.style.backgroundColor = 'rgba(231, 76, 60, 0.2)';
+            } else {
+                indicator.style.backgroundColor = 'rgba(46, 204, 113, 0.2)';
+            }
+        }
+        
+    } catch (error) {
+        console.error("Erro ao verificar status:", error);
+        const statusElement = document.getElementById('statusValue');
+        const indicator = document.getElementById('systemStatus');
+        statusElement.textContent = 'DESCONECTADO';
+        statusElement.className = 'indicator-value disconnected';
+        indicator.style.backgroundColor = 'rgba(231, 76, 60, 0.2)';
+    }
+}
+
+
 
 // Função para atualizar um campo no ThingSpeak
 async function updateField(field, value) {
@@ -203,35 +273,53 @@ function setupEventListeners() {
   // Modo automático
   elements.modoAutomatico?.addEventListener('change', toggleAutomaticMode);
 
-  // Configurações automáticas
-  elements.tempoLiga?.addEventListener('change', updateSettings);
-  elements.tempoDesliga?.addEventListener('change', updateSettings);
-  elements.temperaturaAlvo?.addEventListener('change', updateSettings);
+  
+  // Novo listener para o botão de enviar configurações
+  document.getElementById('sendSettings')?.addEventListener('click', async () => {
+    const now = Date.now();
+    if (now - lastCommandTime < COMMAND_DELAY) {
+      const waitTime = Math.ceil((COMMAND_DELAY - (now - lastCommandTime))/1000);
+      alert(`Aguarde ${waitTime} segundos antes de enviar outro comando.`);
+      return;
+    }
+    
+    const success = await updateAllSettings();
+    if (success) {
+      alert('Configurações enviadas com sucesso!');
+    } else {
+      alert('Erro ao enviar configurações. Tente novamente.');
+    }
+  });
 }
+
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log("Página carregada. Iniciando configuração...");
-  
-  // Verificação dos elementos
-  for (const [key, element] of Object.entries(elements)) {
-    if (!element) console.error(`Elemento não encontrado: ${key}`);
-  }
-  
-  setupEventListeners();
-  
-  // Carrega dados iniciais
-  const initialData = await fetchData();
-  if (initialData && initialData.field5 !== undefined) {
-    const modoAutoState = parseInt(initialData.field5);
-    elements.modoAutomatico.checked = modoAutoState === 1;
-    updateModeButtonState(modoAutoState);
-    toggleManualControls(!modoAutoState);
-  }
-  
-  // Atualização periódica
-  setInterval(fetchData, 5000);
-  console.log("Configuração completa. Monitorando dados...");
+    console.log("Página carregada. Iniciando configuração...");
+    
+    // Verificação dos elementos
+    for (const [key, element] of Object.entries(elements)) {
+        if (!element) console.error(`Elemento não encontrado: ${key}`);
+    }
+    
+    setupEventListeners();
+    
+    // Primeiro verifica o status
+    await updateSystemStatus();
+    
+    // Depois carrega os dados iniciais
+    const initialData = await fetchData();
+    if (initialData && initialData.field5 !== undefined) {
+        const modoAutoState = parseInt(initialData.field5);
+        elements.modoAutomatico.checked = modoAutoState === 1;
+        updateModeButtonState(modoAutoState);
+        toggleManualControls(!modoAutoState);
+    }
+    
+    // Atualização periódica
+    setInterval(fetchData, 5000);
+    setInterval(updateSystemStatus, 5000); // Verifica o status separadamente
+    console.log("Configuração completa. Monitorando dados...");
 });
 
 // Funções auxiliares
@@ -250,4 +338,30 @@ async function updateSettings() {
   await updateField('field8', tempoDesliga);
   await new Promise(resolve => setTimeout(resolve, 15000));
   await updateField('field6', temperaturaAlvo);
+}
+
+// Função para atualizar todas as configurações de uma vez
+async function updateAllSettings() {
+  const tempoLiga = elements.tempoLiga.value * 10;
+  const tempoDesliga = elements.tempoDesliga.value * 10;
+  const temperaturaAlvo = elements.temperaturaAlvo.value;
+  
+  try {
+    // Envia todos os campos em uma única requisição
+    const url = `https://api.thingspeak.com/update?api_key=${writeAPIKey}&field6=${temperaturaAlvo}&field7=${tempoLiga}&field8=${tempoDesliga}`;
+    const response = await fetch(url);
+    
+    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+    
+    const result = await response.text();
+    console.log(`Configurações atualizadas. Resposta:`, result);
+    
+    lastCommandTime = Date.now();
+    await fetchData(); // Atualiza a interface após mudança
+    return true;
+    
+  } catch (error) {
+    console.error(`Erro ao atualizar configurações:`, error);
+    return false;
+  }
 }

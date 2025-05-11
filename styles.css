@@ -374,6 +374,19 @@ input:checked + .slider:before {
   margin-top: 18px;
 }
 
+/* Btn enviar */
+#sendSettings {
+  width: 100%;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* Ajuste no espaçamento do switch */
+.switch-group {
+  margin-bottom: 10px;
+}
+
+
 /* Status indicators */
 .sensor-value.on {
   color: var(--secondary-color);
@@ -424,4 +437,50 @@ input:checked + .slider:before {
   .form-group label {
     text-align: left;
   }
+}
+
+/* Estilos para o indicador de status */
+.indicator-value {
+    font-weight: normal;
+    transition: var(--transition);
+}
+
+.indicator-value.automatic {
+    color: var(--secondary-color);
+}
+
+.indicator-value.manual {
+    color: var(--secondary-color);
+}
+
+.indicator-value.disconnected {
+    color: var(--danger-color);
+}
+
+/* Estilo para o fundo do indicador */
+.status-indicators .indicator {
+    transition: var(--transition);
+}
+
+/* Estilos para o indicador de status */
+#statusValue {
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+#statusValue.automatic {
+    color: #2ecc71; /* Verde */
+}
+
+#statusValue.manual {
+    color: #2ecc71; /* Verde */
+}
+
+#statusValue.disconnected {
+    color: #e74c3c; /* Vermelho */
+}
+
+/* Estilo para o fundo do indicador quando desconectado */
+#systemStatus.disconnected {
+    background-color: rgba(231, 76, 60, 0.2) !important;
 }
